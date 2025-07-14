@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .bg-custom-gradient {
+      background: linear-gradient(90deg, #f4e9fd, #d8c0e9, #d6f1fe, #f2f1fe, #d9c1ea, #f8def4);
+    }
+  }
