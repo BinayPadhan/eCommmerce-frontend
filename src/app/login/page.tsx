@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { loginUser } from "@/lib/api/auth";
 import { setToken } from "@/utils/authCookies";
@@ -30,48 +30,48 @@ const LoginPage = () => {
       toast.error("Invalid credentials");
     }
   };
-  
+
   // const handleGoogleLogin = () => {
   //   window.location.href = "http://localhost:1337/api/connect/google";
   // };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 min-w-[350px] bg-white p-8 rounded shadow-md"
-      >
-        <h2 className="text-2xl font-bold text-center mb-4">Login Account</h2>
-        <input
-          type="text"
-          placeholder="Email or username"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition-colors"
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 min-w-[350px] bg-white p-8 rounded shadow-md"
         >
-          Login
-        </button>
+          <h2 className="text-2xl font-bold text-center mb-4">Login Account</h2>
+          <input
+            type="text"
+            placeholder="Email or username"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition-colors"
+          >
+            Login
+          </button>
 
-        {/* Divider */}
-        <div className="flex items-center my-4">
-          <div className="flex-1 border-t border-gray-300"></div>
-          <span className="px-4 text-gray-500 text-sm">or</span>
-          <div className="flex-1 border-t border-gray-300"></div>
-        </div>
+          {/* Divider */}
+          <div className="flex items-center my-4">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-4 text-gray-500 text-sm">or</span>
+            <div className="flex-1 border-t border-gray-300"></div>
+          </div>
 
-        {/* Google Login Button */}
-        {/* <button
+          {/* Google Login Button */}
+          {/* <button
           type="button"
           onClick={handleGoogleLogin}
           className="bg-white border border-gray-300 text-gray-700 rounded px-4 py-2 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
@@ -97,15 +97,24 @@ const LoginPage = () => {
           Sign in with Google
         </button> */}
 
-        <p className="text-center text-gray-600 mt-4">
-          Do not have an account?{" "}
-          <Link href="/register" className="text-blue-600 hover:text-blue-800">
-            Register here
-          </Link>
-        </p>
-      </form>
+          <p className="text-center text-gray-600 mt-4">
+            Do not have an account?{" "}
+            <Link
+              href="/register"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              Register here
+            </Link>
+          </p>
+        </form>
     </div>
   );
 };
 
-export default LoginPage;
+export default function LoginPageWithSuspense() {
+  return (
+    <Suspense>
+      <LoginPage />
+    </Suspense>
+  );
+}

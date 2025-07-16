@@ -9,6 +9,7 @@ import { fetchDataFromApi } from "../../../../utils/api";
 
 export async function generateStaticParams() {
   const res = await fetchDataFromApi("/api/categories?populate=*");
+
   return res.data.map((cat: any) => ({
     category: cat.slug,
   }));
@@ -16,9 +17,14 @@ export async function generateStaticParams() {
 
 export default async function ProductListPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
+  let products = { data: [] };
 
-
-  const products = await fetchDataFromApi(`/api/products?populate=*&filters[categories][slug][$eq]=${category}`)
+  try {
+    products = await fetchDataFromApi(`/api/products?populate=*&filters[categories][slug][$eq]=${category}`);
+  } catch (error) {
+    // Optionally log or handle the error
+    products = { data: [] };
+  }
 
   return (
     <div>

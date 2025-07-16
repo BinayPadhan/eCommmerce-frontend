@@ -25,7 +25,7 @@ interface NewArrivalProps {
 }
 
 const NewArrival: React.FC<NewArrivalProps> = ({ data }) => {
-  console.log("newArrival", data);
+  // console.log("newArrival", data);
   const [itemsPerView, setItemsPerView] = useState(4);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);

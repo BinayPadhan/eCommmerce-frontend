@@ -1,34 +1,37 @@
+// ✅ app/product/[slug]/page.tsx
+
+import { notFound } from "next/navigation";
+import Link from "next/link";
 import ProductImages from "@/components/ProductImg";
 import ProductInfo from "@/components/ProductInfo";
 import { fetchDataFromApi } from "../../../../utils/api";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 
+// ✅ Define and export the correct prop type for dynamic route
 type ProductPageProps = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
+// ✅ Correct type on `generateStaticParams`
+export async function generateStaticParams(){
   const res = await fetchDataFromApi(`/api/products?fields=slug`);
   const products = res?.data || [];
-
-  return products.map((product: any) => ({
-    slug: product.attributes.slug,
+  return products
+  .filter((product: any) => product?.slug)
+  .map((product: any) => ({
+    slug: product.slug,
   }));
 }
 
+// ✅ Page component with proper type
 export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
   const res = await fetchDataFromApi(
-    `/api/products?populate=*&filters[slug][$eq]=${params.slug}`
+    `/api/products?populate=*&filters[slug][$eq]=${slug}`
   );
 
-  const product = res?.data?.[0]?.attributes;
+  const product = res?.data?.[0];
 
-  if (!product) {
-    notFound(); // 404 if product not found
-  }
+  if (!product) return notFound();
 
   return (
     <>
@@ -39,8 +42,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {" / "}
             <Link href="/#category">Category</Link>
             {" / "}
-            <Link href={`/category/${product.categories.data[0].attributes.slug}`}>
-              {product.categories.data[0].attributes.name}
+            <Link
+              href={`/category/${product?.categories?.data?.[0]?.attributes?.slug}`}
+            >
+              {product?.categories?.data?.[0]?.attributes?.name}
             </Link>
           </>
         )}
@@ -51,7 +56,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </>
         )}
       </p>
-
       <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row gap-10">
         <ProductImages product={product} />
         <ProductInfo product={product} />
