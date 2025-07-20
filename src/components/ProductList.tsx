@@ -2,7 +2,8 @@
 
 import { Heart } from "lucide-react";
 import Link from "next/link";
-import { useWishlist } from "@/context/WishlistContext";
+import { useWishlistStore } from "@/stores/wishlistStore";
+import { useAuth } from "@/context/AuthContext";
 
 interface Product {
   id: number;
@@ -19,15 +20,18 @@ interface Product {
 }
 
 const ProductList: React.FC<{ products: Product[] }> = ({ products }) => {
-  const { addToWishlist, removeFromWishlist, wishlistItems } = useWishlist();
+  const { addToWishlist, removeFromWishlist, wishlistItems } = useWishlistStore();
+  const { user } = useAuth();
 
   const toggleFavorite = (product: Product) => {
+    if (!user?.id) return;
+    
     const isInWishlist = wishlistItems.some((item: any) => item.product.id === product.id);
     
     if (isInWishlist) {
       removeFromWishlist(product.id);
     } else {
-      addToWishlist({ product });
+      addToWishlist({ product }, user.id);
     }
   };
 

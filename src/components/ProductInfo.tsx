@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { Heart, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { getCart } from "@/lib/api/cart";
-import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
+import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import toast from "react-hot-toast";
 
 type Product = {
@@ -32,8 +32,8 @@ type ProductInfoProps = {
 };
 
 const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
-  const { addToCart } = useCart();
-  const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCartStore();
+  const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlistStore();
 
   const [selectedSize, setSelectedSize] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -79,7 +79,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         size: selectedSize,
         quantity: 1,
         oneQuantityPrice: parseFloat(product.price),
-      }); 
+      }, user?.id); 
       // console.log("Added to cart successfully!");
       toast.success('Added to cart successfully!')
     } catch (error: any) {
@@ -90,7 +90,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   };
 
   const toggleWishlist = async () => {
-    if (!product) return;
+    if (!product || !user?.id) return;
     setIsAddingToWishL(true);
   
     try {
@@ -98,7 +98,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
         await removeFromWishlist(product.id);
         toast.error("Remove from Wishlist!");
       } else {
-        await addToWishlist({ product });
+        await addToWishlist({ product }, user.id);
         toast.success("Added to Wishlist!");
       }
     } catch (error) {

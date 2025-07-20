@@ -1,5 +1,4 @@
 // app/category/[category]/page.tsx
-
 import FilterSection from "@/components/FilterSection";
 import SortDropdown from "@/components/Sorting";
 import MobileFilterSortBar from "@/components/FilterSortSection";

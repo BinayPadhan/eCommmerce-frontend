@@ -2,8 +2,9 @@
 import { X, Heart, ShoppingCart, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useWishlist } from "@/context/WishlistContext";
-import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { useWishlistStore } from "@/stores/wishlistStore";
+import { useCartStore } from "@/stores/cartStore";
 import toast from "react-hot-toast";
 
 
@@ -14,9 +15,10 @@ const WishlistGrid: React.FC = () => {
   const [movingItems, setMovingItems] = useState<Set<string | number>>(
     new Set()
   );
-  const { wishlistItems, removeFromWishlist } = useWishlist();
+  const { wishlistItems, removeFromWishlist } = useWishlistStore();
   // console.log("wishlistItems", wishlistItems);
-  const { addToCart } = useCart();
+  const { addToCart } = useCartStore();
+  const { user } = useAuth();
 
   const moveToCart = async (item: any) => {
     const selectedSize = selectedSizes[item.product.id];
@@ -33,7 +35,7 @@ const WishlistGrid: React.FC = () => {
         size: selectedSize,
         quantity: 1,
         oneQuantityPrice: parseFloat(item.product.price),
-      });
+      }, user?.id);
 
       // Remove from wishlist after successfully adding to cart
       removeFromWishlist(item.product.id);

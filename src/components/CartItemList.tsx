@@ -5,14 +5,14 @@ import { LoaderCircle, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 
 import { useAuth } from "@/context/AuthContext"; // for token
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
 
 const CartItemList: React.FC = () => {
   const { cartItems, updateCartItem, removeCartItem, isLoading, loadingItems } =
-    useCart();
+    useCartStore();
 
   // console.log("CartItemList from CartContext:", cartItems);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   // Helper to get available sizes from product (handle any type)
   const getAvailableSizes = (product: any): string[] => {
@@ -28,27 +28,27 @@ const CartItemList: React.FC = () => {
     item: any,
     updates: { quantity?: number; size?: string }
   ) => {
-    if (!item?.product?.id || !item.size) return;
+    if (!item?.product?.id || !item.size || !user?.id) return;
     if (updates.quantity !== undefined) {
       updateCartItem?.({
         productId: item.product.id,
         oldSize: item.size,
         quantity: updates.quantity,
-      });
+      }, user.id);
     } else if (updates.size !== undefined) {
       updateCartItem?.({
         productId: item.product.id,
         oldSize: item.size,
         newSize: updates.size,
-      });
+      }, user.id);
     }
   };
 
   // Remove handler, pass correct object shape
   const handleRemove = async (item: any) => {
-    if (!token || !item?.product?.id || !item.size) return;
+    if (!token || !item?.product?.id || !item.size || !user?.id) return;
     try {
-      await removeCartItem({ cartId: item.id });
+      await removeCartItem({ cartId: item.id }, user.id);
     } catch (err) {
       console.error("Remove failed:", err);
     }

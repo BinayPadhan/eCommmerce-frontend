@@ -3,15 +3,18 @@
 import { CircleCheck } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SuccessPage() {
-  const { clearCart } = useCart();
+  const { clearCart } = useCartStore();
+  const { user } = useAuth();
 
   useEffect(() => {
     const clearCartOnSuccess = async () => {
+      if (!user?.id) return;
       try {
-        await clearCart();
+        await clearCart(user.id);
         console.log('Cart cleared successfully after payment');
       } catch (error) {
         console.error('Failed to clear cart:', error);
@@ -19,7 +22,7 @@ export default function SuccessPage() {
     };
 
     clearCartOnSuccess();
-  }, [clearCart]);
+  }, [clearCart, user?.id]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

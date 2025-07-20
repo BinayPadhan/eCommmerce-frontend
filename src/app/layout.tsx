@@ -4,8 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
-import { WishlistProvider } from "@/context/WishlistContext";
-import { CartProvider } from "@/context/CartContext";
+import StoreInitializer from "@/components/StoreInitializer";
 import { Toaster } from "react-hot-toast";
 
 const lato = Lato({
@@ -28,14 +27,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lato.variable} font-sans antialiased`}>
         <AuthProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <Navbar />
-              <Toaster position="top-center" reverseOrder={true} />
-              {children}
-              <Footer />
-            </WishlistProvider>
-          </CartProvider>
+          <StoreInitializer />
+          <Navbar />
+          <Toaster position="top-center" reverseOrder={true} />
+          {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>

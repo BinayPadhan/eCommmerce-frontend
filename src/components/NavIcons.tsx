@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
+import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import { Heart, ShoppingCart, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,8 +11,8 @@ const NavIcons = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { isLoggedIn, logout } = useAuth();
-  const { wishlistItems } = useWishlist();
-  const { cartItems } = useCart();
+  const { wishlistItems } = useWishlistStore();
+  const { cartItems } = useCartStore();
 
   return (
     <div className="flex items-center gap-4 xl:gap-6 relative">

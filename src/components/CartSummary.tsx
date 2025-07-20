@@ -1,16 +1,16 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/stores/cartStore";
 import { checkout } from "@/lib/api/order";
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 
 const CartSummary: React.FC = () => {
-  const { cartItems } = useCart();
+  const { cartItems } = useCartStore();
   const [isToCheckout, setIsToCheckout] = useState(false);
-  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
+  const totalQuantity = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
+  const totalPrice = cartItems.reduce((sum: number, item: any) => sum + item.totalPrice, 0);
   const { token } = useAuth();
 //   const { cart, total, clearCart } = useCart();
 
