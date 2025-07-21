@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 const LoginPage = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
@@ -19,6 +20,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await loginUser(identifier, password);
       setToken(res.jwt); // Save JWT in cookies
@@ -28,6 +30,8 @@ const LoginPage = () => {
     } catch (err) {
       console.error("Invalid credentials", err);
       toast.error("Invalid credentials");
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -58,9 +62,10 @@ const LoginPage = () => {
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition-colors"
+            disabled={loading}
+            className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
           >
-            Login
+            {loading? "Logging to account" : "Login" }
           </button>
 
           {/* Divider */}

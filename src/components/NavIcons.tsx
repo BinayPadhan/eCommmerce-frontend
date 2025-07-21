@@ -39,7 +39,7 @@ const NavIcons = () => {
       <Link href="/wishlist">
         <div className="relative cursor-pointer">
           <Heart className="w-6 h-6 transition-all duration-300 hover:scale-110 hover:text-red-600 cursor-pointer" />
-          {wishlistItems?.length > 0 && (
+          {wishlistItems?.length > 0 && isLoggedIn && (
             <div className="absolute -top-4 -right-4 w-6 h-6 bg-red-400 rounded-full text-white text-sm flex items-center justify-center">
               {wishlistItems.length}
             </div>
@@ -49,7 +49,7 @@ const NavIcons = () => {
       <Link href="/cart">
         <div className="relative cursor-pointer">
           <ShoppingCart className="w-6 h-6 transition-all duration-300 hover:scale-110 hover:text-red-600 cursor-pointer" />
-          {cartItems?.length > 0 && (
+          {cartItems?.length > 0 && isLoggedIn && (
             <div className="absolute -top-4 -right-4 w-6 h-6 bg-red-400 rounded-full text-white text-sm flex items-center justify-center">
               {cartItems.length}
             </div>
