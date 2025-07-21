@@ -3,20 +3,18 @@ import { useParams } from "next/navigation";
 import { filterConfig } from "@/lib/filterConfig";
 import { useState, useEffect } from "react";
 
-interface FilterOption {
-  title: string;
-  options: string[];
-}
 
 interface FilterSectionProps {
+  category: string;
   onFilterChange?: (filters: Record<string, string[]>) => void;
   onSortChange?: (value: string) => void;
 }
 
 export default function FilterSection({
   onFilterChange,
+  category
 }: FilterSectionProps) {
-  const { category } = useParams();
+  // const { category } = useParams();
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
@@ -26,6 +24,10 @@ export default function FilterSection({
     // Reset filters when category changes
     setSelectedFilters({});
   }, [category]);
+
+  useEffect(() => {
+    onFilterChange?.(selectedFilters);
+  }, [selectedFilters, onFilterChange]);
 
   const handleFilterChange = (
     filterTitle: string,
@@ -46,7 +48,6 @@ export default function FilterSection({
         );
       }
 
-      onFilterChange?.(newFilters);
       return newFilters;
     });
   };

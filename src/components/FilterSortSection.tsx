@@ -1,13 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { SlidersHorizontal, Filter, ChevronRight } from 'lucide-react';
-import { filterConfig } from '@/lib/filterConfig';
+import { useState, useEffect } from "react";
+import { SlidersHorizontal, Filter, ChevronRight } from "lucide-react";
+import { filterConfig } from "@/lib/filterConfig";
+import SortModal from "./SortModal";
 
-interface FilterOption {
-  title: string;
-  options: string[];
-}
 
 interface Props {
   category: string;
@@ -15,36 +12,48 @@ interface Props {
   onFilterChange?: (filters: Record<string, string[]>) => void;
 }
 
-const FilterSortSection: React.FC<Props> = ({ category, onSortChange, onFilterChange }) => {
+const FilterSortSection: React.FC<Props> = ({
+  category,
+  onSortChange,
+  onFilterChange,
+}) => {
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const [isSortAnimating, setIsSortAnimating] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string[]>
+  >({});
   const [activeTitle, setActiveTitle] = useState<string | null>(null);
-  const filters = filterConfig[category] || [];
+  const filters = filterConfig[category as string] || [];
 
   useEffect(() => {
-    console.log('Current category:', category);
-    console.log('Available filters:', filters);
-    // Set the first title as active when filters are loaded
-    if (filters.length > 0 && !activeTitle) {
-      setActiveTitle(filters[0].title);
-    }
-  }, [category, filters, activeTitle]);
+    // Reset filters when category changes
+    setSelectedFilters({});
+  }, [category]);
 
-  const handleFilterChange = (filterTitle: string, option: string) => {
-    setSelectedFilters(prev => {
-      const currentOptions = prev[filterTitle] || [];
-      const newOptions = currentOptions.includes(option)
-        ? currentOptions.filter(opt => opt !== option)
-        : [...currentOptions, option];
-      
-      const newFilters = {
-        ...prev,
-        [filterTitle]: newOptions
-      };
-      
-      onFilterChange?.(newFilters);
+  useEffect(() => {
+    onFilterChange?.(selectedFilters);
+  }, [selectedFilters, onFilterChange]);
+
+  const handleFilterChange = (
+    filterTitle: string,
+    option: string,
+    checked: boolean
+  ) => {
+    setSelectedFilters((prev) => {
+      const newFilters = { ...prev };
+      if (!newFilters[filterTitle]) {
+        newFilters[filterTitle] = [];
+      }
+
+      if (checked) {
+        newFilters[filterTitle] = [...newFilters[filterTitle], option];
+      } else {
+        newFilters[filterTitle] = newFilters[filterTitle].filter(
+          (item) => item !== option
+        );
+      }
+
       return newFilters;
     });
   };
@@ -91,17 +100,14 @@ const FilterSortSection: React.FC<Props> = ({ category, onSortChange, onFilterCh
             <div className="p-4 border-b">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Filters</h3>
-                <button 
-                  
-                  className="text-sm underline font-medium"
-                >
-                  Clear
-                </button>
+                <button className="text-sm underline font-medium">Clear</button>
               </div>
             </div>
             <div className="flex-1 overflow-y-auto">
               {filters.length === 0 ? (
-                <p className="text-gray-500 p-4">No filters available for category: {category}</p>
+                <p className="text-gray-500 p-4">
+                  No filters available for category: {category}
+                </p>
               ) : (
                 <div className="flex h-full">
                   {/* Left side - Titles */}
@@ -111,7 +117,9 @@ const FilterSortSection: React.FC<Props> = ({ category, onSortChange, onFilterCh
                         key={idx}
                         onClick={() => handleTitleClick(filter.title)}
                         className={`w-full text-left px-4 py-3 border-b flex items-center justify-between ${
-                          activeTitle === filter.title ? 'bg-gray-50 text-black' : 'text-gray-600'
+                          activeTitle === filter.title
+                            ? "bg-gray-50 text-black"
+                            : "text-gray-600"
                         }`}
                       >
                         <span className="font-medium">{filter.title}</span>
@@ -124,22 +132,36 @@ const FilterSortSection: React.FC<Props> = ({ category, onSortChange, onFilterCh
                     {activeTitle ? (
                       <div>
                         <div className="flex flex-col">
-                          {filters.find(f => f.title === activeTitle)?.options.map((option, i) => (
-                            <label 
-                              key={i} 
-                              className={`w-full text-left px-4 py-3 border-b flex items-center justify-between ${
-                                selectedFilters[activeTitle]?.includes(option) ? 'bg-gray-100 border-gray-400' : 'border-gray-200'
-                              }`}
-                            >{option}
-                              <input
-                                type="checkbox"
-                                className="mr-2"
-                                checked={selectedFilters[activeTitle]?.includes(option) || false}
-                                onChange={() => handleFilterChange(activeTitle, option)}
-                              />
-                              
-                            </label>
-                          ))}
+                          {filters
+                            .find((f) => f.title === activeTitle)
+                            ?.options.map((option, i) => (
+                              <label
+                                key={i}
+                                className={`w-full text-left px-4 py-3 border-b flex items-center justify-between ${
+                                  selectedFilters[activeTitle]?.includes(option)
+                                    ? "bg-gray-100 border-gray-400"
+                                    : "border-gray-200"
+                                }`}
+                              >
+                                {option}
+                                <input
+                                  type="checkbox"
+                                  className="mr-2"
+                                  checked={
+                                    selectedFilters[activeTitle]?.includes(
+                                      option
+                                    ) || false
+                                  }
+                                  onChange={(e) =>
+                                    handleFilterChange(
+                                      activeTitle,
+                                      option,
+                                      e.target.checked
+                                    )
+                                  }
+                                />
+                              </label>
+                            ))}
                         </div>
                       </div>
                     ) : (
@@ -170,80 +192,12 @@ const FilterSortSection: React.FC<Props> = ({ category, onSortChange, onFilterCh
       )}
 
       {/* Sort Modal */}
-      {(showSort || isSortAnimating) && (
-        <div 
-          className={`fixed inset-0 bg-black/50 z-[100] flex items-end md:hidden transition-all duration-300 ease-in-out ${
-            showSort ? 'opacity-100' : 'opacity-0'
-          }`}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Sort options"
-        >
-          <div className={`w-full h-[35%] bg-white rounded-t-lg transform transition-all duration-300 ease-in-out ${
-            showSort ? 'translate-y-0' : 'translate-y-full'
-          }`}>
-            <div className="p-4 border-b">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Sort By</h3>
-                <button 
-                  onClick={handleSortClose}
-                  className="text-sm font-medium"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-            <div className="p-0">
-              <div className="flex flex-col">
-                <label className="w-full text-left px-4 py-3 border-b flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                  <span>Recommended</span>
-                  <input
-                    type="radio"
-                    name="sort"
-                    className="w-4 h-4"
-                    onChange={() => {
-                      onSortChange?.('');
-                    }}
-                  />
-                </label>
-                <label className="w-full text-left px-4 py-3 border-b flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                  <span>Price: Low to High</span>
-                  <input
-                    type="radio"
-                    name="sort"
-                    className="w-4 h-4"
-                    onChange={() => {
-                      onSortChange?.('priceLow');
-                    }}
-                  />
-                </label>
-                <label className="w-full text-left px-4 py-3 border-b flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                  <span>Price: High to Low</span>
-                  <input
-                    type="radio"
-                    name="sort"
-                    className="w-4 h-4"
-                    onChange={() => {
-                      onSortChange?.('priceHigh');
-                    }}
-                  />
-                </label>
-                <label className="w-full text-left px-4 py-3 border-b flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                  <span>Newest First</span>
-                  <input
-                    type="radio"
-                    name="sort"
-                    className="w-4 h-4"
-                    onChange={() => {
-                      onSortChange?.('newest');
-                    }}
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <SortModal
+        showSort={showSort}
+        isSortAnimating={isSortAnimating}
+        onClose={handleSortClose}
+        onSortChange={onSortChange}
+      />
     </>
   );
 };
