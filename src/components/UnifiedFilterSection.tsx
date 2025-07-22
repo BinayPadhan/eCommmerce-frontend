@@ -27,7 +27,7 @@ const UnifiedFilterSection: React.FC<UnifiedFilterSectionProps> = ({
 
   if (isDesktop) {
     // Desktop: only render FilterSection
-    return <FilterSection category={category} onFilterChange={onFilterChange} />;
+    return <FilterSection category={category} onFilterChange={onFilterChange} onSortChange={onSortChange} />;
   } else {
     // Mobile: only render FilterSortSection
     return <FilterSortSection category={category} onFilterChange={onFilterChange} onSortChange={onSortChange} />;

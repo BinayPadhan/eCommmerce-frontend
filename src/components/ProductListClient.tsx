@@ -14,10 +14,15 @@ export default function ProductListClient({
 }) {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [filters, setFilters] = useState<Record<string, string[]>>({});
+  const [sortOrder, setSortOrder] = useState<string | null>(null);
 
   const handleFilterChange = (newFilters: Record<string, string[]>) => {
     setFilters(newFilters);
     console.log("filters", filters);
+  };
+  
+  const handleSortChange = (order: string) => {
+    setSortOrder(order);
   };
 
   useEffect(() => {
@@ -49,14 +54,27 @@ export default function ProductListClient({
         });
       }
     });
+    // Sorting logic
+    if (sortOrder === "priceLow") {
+      filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
+    } else if (sortOrder === "priceHigh") {
+      filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
+    } else if (sortOrder === "newest") {
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.createdAt || a.created_at || 0).getTime();
+        const dateB = new Date(b.createdAt || b.created_at || 0).getTime();
+        return dateB - dateA;
+      });
+    }
     setFilteredProducts(filtered);
-  }, [filters, products]);
+  }, [filters, products, sortOrder]);
 
   return (
     <div className="flex px-0 md:px-0">
       <UnifiedFilterSection
         category={category}
         onFilterChange={handleFilterChange}
+        onSortChange={handleSortChange}
       />
       <div className="w-full md:w-4/5">
         <ProductGrid products={filteredProducts} />

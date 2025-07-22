@@ -1,8 +1,7 @@
-'use client';
-import { useParams } from "next/navigation";
+"use client";
 import { filterConfig } from "@/lib/filterConfig";
 import { useState, useEffect } from "react";
-
+import Sorting from "./Sorting";
 
 interface FilterSectionProps {
   category: string;
@@ -12,7 +11,8 @@ interface FilterSectionProps {
 
 export default function FilterSection({
   onFilterChange,
-  category
+  category,
+  onSortChange,
 }: FilterSectionProps) {
   // const { category } = useParams();
   const [selectedFilters, setSelectedFilters] = useState<
@@ -72,7 +72,11 @@ export default function FilterSection({
   return (
     <div className="p-0 relative">
       <div className="bg-white rounded-lg shadow-sm flex flex-col h-[calc(100vh-5rem)]">
-        <div className="p-4 border">
+        {/* Sorting Dropdown */}
+        <div className="p-4 border-b flex flex-col justify-between">
+          <div className="w-[250px]">
+            <Sorting onSortChange={onSortChange ?? (() => {})} />
+          </div>
           <h2 className="text-xl font-semibold text-gray-800">Filters</h2>
         </div>
         <div className="overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400 border-r">
@@ -91,9 +95,8 @@ export default function FilterSection({
                             type="checkbox"
                             className="peer sr-only"
                             checked={
-                              selectedFilters[filter.title]?.includes(
-                                option
-                              ) || false
+                              selectedFilters[filter.title]?.includes(option) ||
+                              false
                             }
                             onChange={(e) =>
                               handleFilterChange(
