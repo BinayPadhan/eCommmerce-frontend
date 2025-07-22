@@ -8,12 +8,12 @@ export default function WishlistPage() {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!authLoading && !isLoggedIn) {
-  //     router.push(`/login?redirect=${encodeURIComponent("/wishlist")}`);
-  //     return;
-  //   }
-  // }, [isLoggedIn, authLoading, router]);
+  useEffect(() => {
+    if (!authLoading && !isLoggedIn) {
+      router.push(`/login?redirect=${encodeURIComponent("/wishlist")}`);
+      return;
+    }
+  }, [isLoggedIn, authLoading, router]);
 
   if (authLoading) {
     return (

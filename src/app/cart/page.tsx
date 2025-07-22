@@ -9,12 +9,12 @@ const CartPage = () => {
   const router = useRouter();
   const { isLoggedIn, loading: authLoading } = useAuth();
 
-  // useEffect(() => {
-  //   if (!authLoading && !isLoggedIn) {
-  //     router.push(`/login?redirect=${encodeURIComponent("/cart")}`);
-  //     return;
-  //   }
-  // }, [isLoggedIn, authLoading, router]);
+  useEffect(() => {
+    if (!authLoading && !isLoggedIn) {
+      router.push(`/login?redirect=${encodeURIComponent("/cart")}`);
+      return;
+    }
+  }, [isLoggedIn, authLoading, router]);
 
   if (authLoading) {
     return (
