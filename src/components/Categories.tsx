@@ -54,7 +54,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ data }) => {
                   unoptimized // optional: remove if using allowed domain
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-xl font-semibold text-gray-800 uppercase">{cat.name}</span>
+                  <span className="text-lg md:text-xl font-semibold text-gray-800 uppercase">{cat.name}</span>
                 </div>
               </div>
             </Link>
