@@ -9,27 +9,27 @@ const Footer: React.FC = () => {
           <h3 className="font-semibold text-lg mb-4">Need Help</h3>
           <ul className="space-y-2 text-sm font-medium">
             <li>
-              <Link className="hover:text-red-700" href="/contact">
+              <Link className="hover:text-red-700" href="#">
                 Contact Us
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/returns">
+              <Link className="hover:text-red-700" href="#">
                 Returns and Refunds
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/track-order">
+              <Link className="hover:text-red-700" href="#">
                 Track Order
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/faqs">
+              <Link className="hover:text-red-700" href="#">
                 FAQs
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/account">
+              <Link className="hover:text-red-700" href="#">
                 My Account
               </Link>
             </li>
@@ -39,27 +39,27 @@ const Footer: React.FC = () => {
           <h3 className="font-semibold text-lg mb-4">Company</h3>
           <ul className="space-y-2 text-sm font-medium">
             <li>
-              <Link className="hover:text-red-700" href="/about">
+              <Link className="hover:text-red-700" href="#">
                 About Us
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/careers">
+              <Link className="hover:text-red-700" href="#">
                 Careers
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/investors">
+              <Link className="hover:text-red-700" href="#">
                 Investors Relation
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/gift-voucher">
+              <Link className="hover:text-red-700" href="#">
                 Gift Voucher
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/community">
+              <Link className="hover:text-red-700" href="#">
                 Community Initiatives
               </Link>
             </li>
@@ -69,27 +69,27 @@ const Footer: React.FC = () => {
           <h3 className="font-semibold text-lg mb-4">More Info</h3>
           <ul className="space-y-2 text-sm font-medium">
             <li>
-              <Link className="hover:text-red-700" href="/privacy">
+              <Link className="hover:text-red-700" href="#">
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/terms">
+              <Link className="hover:text-red-700" href="#">
                 Terms & Conditions
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/sitemap">
+              <Link className="hover:text-red-700" href="#">
                 Sitemap
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/notifications">
+              <Link className="hover:text-red-700" href="#">
                 Get Notified
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/blog">
+              <Link className="hover:text-red-700" href="#">
                 Blogs
               </Link>
             </li>
@@ -99,32 +99,32 @@ const Footer: React.FC = () => {
           <h3 className="font-semibold text-lg mb-4">Store Near Me</h3>
           <ul className="space-y-2 text-sm font-medium">
             <li>
-              <Link className="hover:text-red-700" href="/stores/mumbai">
+              <Link className="hover:text-red-700" href="#">
                 Mumbai
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/stores/delhi">
+              <Link className="hover:text-red-700" href="#">
                 Delhi
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/stores/bangalore">
+              <Link className="hover:text-red-700" href="#">
                 Bangalore
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/stores/hyderabad">
+              <Link className="hover:text-red-700" href="#">
                 Hyderabad
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/stores/kolkata">
+              <Link className="hover:text-red-700" href="#">
                 Kolkata
               </Link>
             </li>
             <li>
-              <Link className="hover:text-red-700" href="/stores/gurgaon">
+              <Link className="hover:text-red-700" href="#">
                 Gurgaon
               </Link>
             </li>
