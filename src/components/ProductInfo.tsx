@@ -6,6 +6,7 @@ import { getCart } from "@/lib/api/cart";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: string | number;
@@ -40,8 +41,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isAddingToWishL, setIsAddingToWishL] = useState(false);
   const [cartId, setCartId] = useState<number | null>(null);
-
-  const { token, user } = useAuth();
+  const router = useRouter();
+  const { token, user, isLoggedIn } = useAuth();
 
   useEffect(() => {
     if (!user?.id || !token || cartId) return; // prevent repeated fetch
@@ -60,6 +61,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
   // console.log('cartId', cartId);
 
   const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      toast.error('Please log in to add items to the cart');
+      router.push(`/login?redirect=${encodeURIComponent("/")}`);
+      return;
+    }
     if (!product) {
       setErrorMessage("Product not available");
       return;

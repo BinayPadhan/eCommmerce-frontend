@@ -25,7 +25,7 @@ const NavIcons = () => {
           <UserRound className="w-6 h-6 transition-all duration-300 hover:scale-110 hover:text-red-600 cursor-pointer" />
         </Link>
       )}
-
+      
       {isProfileOpen && isLoggedIn && (
         <div className="absolute p-4 rounded-md top-12 left-0 bg-white text-sm shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20">
           <Link href="/profile">Profile</Link>

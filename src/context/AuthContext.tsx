@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     removeToken(); 
     setUser(null);
     setToken(null);
+    window.location.reload();
   };
 
   const login = (userData: any) => {

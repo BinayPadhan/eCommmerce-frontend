@@ -1,8 +1,8 @@
 "use client";
 
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import ProductCard from "./ProductCard";
 
 interface Product {
   id: number;
@@ -11,7 +11,7 @@ interface Product {
   slug: string;
   image: Array<{
     url: string;
-  }>
+  }>;
   thumbnail?: {
     url: string;
   };
@@ -72,44 +72,15 @@ const NewArrival: React.FC<NewArrivalProps> = ({ data }) => {
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {data.map((item) => {
-            const imageUrl = item.thumbnail?.url || "/image/portrait1.webp";
-            const hoverUrl = item.image[1]?.url || "/image/portrait1.webp";
-            const isHovered = hoveredProduct === item.id;
-            
-            return (
-              <div
-                key={item.id}
-                className="flex-shrink-0 w-[50%] md:w-[25%] p-2"
-              >
-                <Link href={`/product/${item.slug}`} className="block h-full ">
-                  <div 
-                    className="bg-white rounded-lg shadow p-2 h-full flex flex-col"
-                    onMouseEnter={() => setHoveredProduct(item.id)}
-                    onMouseLeave={() => setHoveredProduct(null)}
-                  >
-                    <div className="relative w-full aspect-square">
-                      <img
-                        src={imageUrl}
-                        alt={item.name}
-                        className="w-full h-full object-contain rounded transition-opacity duration-500 ease-in-out"
-                        style={{ opacity: isHovered ? 0 : 1 }}
-                      />
-                      <img
-                        src={hoverUrl}
-                        alt={item.name}
-                        className="absolute inset-0 w-full h-full object-contain rounded transition-opacity duration-500 ease-in-out"
-                        style={{ opacity: isHovered ? 1 : 0 }}
-                      />
-                    </div>
-                    <h3 className="mt-2 font-medium">{item.name}</h3>
-                    <p className="mt-0 text-gray-500 uppercase text-[12px]">{item.categories[0]?.name}</p>
-                    <p className="text-black font-semibold">₹ {item.price}</p>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
+          {data.map((item) => (
+            <ProductCard
+              key={item.id}
+              product={item}
+              isHovered={hoveredProduct === item.id}
+              onMouseEnter={() => setHoveredProduct(item.id)}
+              onMouseLeave={() => setHoveredProduct(null)}
+            />
+          ))}
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ const desktopImages = [
   "/image/landscape2.webp",
   "/image/landscape3.webp",
   "/image/landscape4.webp",
+  "/image/landscape6.webp",
 ];
 
 const mobileImages = [
@@ -15,6 +16,7 @@ const mobileImages = [
   "/image/portrait2.webp",
   "/image/portrait3.webp",
   "/image/portrait4.webp",
+  "/image/portrait6.webp",
 ];
 
 const ImageSlider: React.FC = () => {

@@ -9,11 +9,6 @@ export async function generateStaticParams() {
   }));
 }
 
-interface ProductListPageProps {
-  params: {
-    category: string;
-  };
-}
 
 // Separate async function (not exported) to run data fetching
 export default async function ProductListPage({
