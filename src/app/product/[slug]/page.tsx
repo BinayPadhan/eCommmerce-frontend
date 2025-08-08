@@ -30,6 +30,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   );
 
   const product = res?.data?.[0];
+  console.log("Product Data:", product);
 
   if (!product) return notFound();
 
@@ -37,15 +38,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <p className="text-gray-500 text-sm capitalize mt-24 max-w-7xl mx-auto px-4 py-4">
         <Link href="/">Home</Link>
-        {product?.categories?.data?.[0]?.attributes && (
+        {product?.categories && (
           <>
             {" / "}
-            <Link href="/#category">Category</Link>
-            {" / "}
             <Link
-              href={`/category/${product?.categories?.data?.[0]?.attributes?.slug}`}
+              href={`/category/${product?.categories[0]?.slug}`}
             >
-              {product?.categories?.data?.[0]?.attributes?.name}
+              {product?.categories[0]?.name}
             </Link>
           </>
         )}
